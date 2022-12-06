@@ -3,17 +3,16 @@ from django.contrib import admin
 from django.urls import path, include
 
 from TaskManager import settings
-from TaskManager.accounts.views import HomePage
+from TaskManager.common.views import HomePage, home_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomePage.as_view(), name='home page'),
+    # path('', home_page, name='home page'),
     path('accounts/', include('TaskManager.accounts.urls')),
     path('tasks/', include('TaskManager.tasks.urls')),
     path('vacations/', include('TaskManager.vacations.urls')),
-    # TODO: Fix this 'common' path
-    # probably needed later
-    # path('common/', include('TaskManager.common.urls')),
+    path('common/', include('TaskManager.common.urls')),
 ]
 
 if settings.DEBUG:

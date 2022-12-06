@@ -32,4 +32,23 @@
             {% endif %}
         </div>
     </section>
+    <section>
+        {% for article in news %}
+
+            <h1 style="color:white">{{ article.news_Title }}</h1>
+            <h1 style="color:white">{{ article.news_article }}</h1>
+            <h3 style="color:red"> Comment this article</h3>
+            {% for comment in article.newscomment_set.all %}
+                <h1 style="color:greenyellow">{{ comment.news_comment }} from {{ comment.comment_date_and_time }} with author: {{ comment.comment_user }}</h1>
+            {% endfor %}
+            <form method="post" action="{% url 'comment article' pk=article.pk %}">
+                {{ comment_form.news_comment }}
+                {#                <input type="text" id="commented_section" name="commented_section" value="{{article.pk}}" />#}
+                {% csrf_token %}
+                <button type="submit">Post</button>
+
+            </form>
+        {% endfor %}
+    </section>
+
 {% endblock %}

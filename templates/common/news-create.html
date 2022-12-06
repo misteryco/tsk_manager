@@ -1,0 +1,15 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load placeholders %}
+{% block content_page %}
+    <form method="post">
+        Shows all with labels
+        {{ form.as_p }}
+
+        {% csrf_token %}
+        <input class="btn submit" type="submit" value="Save the article">
+        {#        <button>Register</button>#}
+
+
+    </form>
+{% endblock %}

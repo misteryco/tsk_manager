@@ -9,15 +9,6 @@ from TaskManager.accounts.forms import CreateUserForm, ChangeUserPasswordForm
 UserModel = get_user_model()
 
 
-class HomePage(views.ListView):
-    model = UserModel
-    template_name = 'list_users.html'
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        return context
-
-
 class SignInView(auth_views.LoginView):
     template_name = 'accounts/login-page.html'
 
