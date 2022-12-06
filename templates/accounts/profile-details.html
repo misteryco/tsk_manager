@@ -1,0 +1,56 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content_page %}
+    <!-- profile details section -->
+    <section id="car-details">
+        <h1>User Profile Details</h1>
+        <div class="info-section">
+            <div class="car-header">
+                {#                {% if not profile.profile_picture %}#}
+                {#                    <!-- default profile image (if the user does NOT have any)-->#}
+                {#                    <img class="car-img" src="{% static 'images/default-profile.png' %}" alt='profile-image'/>#}
+                {#                {% else %}#}
+                {#                    <!-- if the user has a profile image -->#}
+                {#                    <img class="car-img" src="{{ profile.profile_picture }}" alt='profile-image'/>#}
+                {#                {% endif %}#}
+
+                {% if object.get_full_name %}
+                    <!-- user full name (if any) -->
+                    <h1>{{ object.get_full_name }}</h1>
+                {% endif %}
+                <!-- user username -->
+                <p class="description">Username: {{ object.username }}</p>
+                <!-- user email -->
+                <p class="description">Email: {{ object.email }}</p>
+                <!-- user age -->
+                <p class="description">Role: {{ object.role }}</p>
+                <!-- total price of all cars -->
+                <p class="description">Level: {{ object.level }}</p>
+                <!-- Edit/Delete buttons -->
+                <div class="buttons">
+                    {% if is_general_manager %}
+                        <a href="{% url 'profile-edit user' pk=object.pk %}" class="edit-button">Edit</a>
+                        <a href="{% url 'profile-delete user' pk=object.pk %}" class="delete-button">Delete</a>
+                    {% endif %}
+                </div>
+
+                <p class="description">
+                    {% for task in object.task_set.all %}
+                        List of task created by user:
+                        <p class="description">-> task id: {{ task.pk }}: Task name: {{ task.name }},</p>
+                        </p>
+                    {% endfor %}
+                <p class="description">
+{#                    {% if is_general_manager %}#}
+{#                        {% for vacation in object.task_set.all %}#}
+{#                            List of task created by user:#}
+{#                            <p class="description">-> task id: {{ task.pk }}: Task name: {{ task.name }},</p>#}
+{#                            </p>#}
+{#                        {% endfor %}#}
+{#                    {% endif %}#}
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

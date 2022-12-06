@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load placeholders %}
+{% block content_page %}
+    <form method="post">
+        {#    Shows all with labels#}
+        {#    {{ form.as_p }}#}
+        <p>{{ form.username|placeholder:'Enter username' }}</p>
+        <p>{{ form.email }}</p>
+        <p>{{ form.password1 }}</p>
+        <p>{{ form.password2 }}</p>
+        {% csrf_token %}
+        <input class="btn submit" type="submit" value="Register Profile">
+{#        <button>Register</button>#}
+
+
+    </form>
+{% endblock %}

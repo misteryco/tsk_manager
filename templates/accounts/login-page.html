@@ -1,0 +1,15 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content_page %}
+
+
+<form method="post">
+    {{ form.as_p }}
+    <input type="hidden" name="next" value="{{ next}}">
+    {% csrf_token %}
+{#    <button>Log In</button>#}
+    <input class="btn submit" type="submit" value="Log In">
+
+</form>
+
+{% endblock %}

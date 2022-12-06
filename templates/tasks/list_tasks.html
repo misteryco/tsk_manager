@@ -1,0 +1,46 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content_page %}
+
+    {% if not object_list %}
+        <!-- Display paragraph: If there are no cars yet-->
+        <p class="no-articles">No tasks yet</p>
+    {% else %}
+        <!-- Display div "car" with information about every car (if any)-->
+        <section id="catalogue">
+        <h1>tasks search form</h1>
+        <form method="post">
+            {{ search_form }}
+            {% csrf_token %}
+            <input class="btn submit" type="submit" value="Search">
+        </form>
+
+        <h1>Total tasks: {{ total_tasks }}</h1>
+        {% for task in object_list %}
+            <!-- first car-->
+            <div class="car-card">
+                <h3>Task No: {{ task.pk }}</h3>
+                <h3>Name: {{ task.name }}</h3>
+                <h1>Created by: {{ task.user }}</h1>
+                <!-- car type -->
+                <h1>Due date: {{ task.due_date }}</h1>
+                <!-- car model -->
+                <h1>Description: {{ task.description }}</h1>
+                <h3>Task should be executed by:</h3>
+                <h1>
+                    {% for exec in task.executor.all %}
+                        <a href="{% url 'profile-view user' pk=exec.pk %}">{{ exec.username }}</a>,
+                    {% endfor %}
+                </h1>
+                <h1>attached file by author: {{ task.attached_file_by_author }}</h1>
+                <h1>attached file by executor: {{ task.attached_file_by_executor }}</h1>
+                <div class="details-buttons">
+                    <!-- car details button -->
+                    <a href="{% url 'task detail' pk=task.pk %}" class="details-btn">Details</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</section>
+
+{% endblock %}

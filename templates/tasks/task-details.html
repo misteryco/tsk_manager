@@ -1,0 +1,34 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content_page %}
+    <!-- profile details section -->
+    <section id="car-details">
+        <h1>Task Details</h1>
+        <div class="info-section">
+            <div class="car-header">
+                <!-- user username -->
+                <p class="description">Task No: {{ object.pk }}</p>
+                <!-- user email -->
+                <p class="description">Name: {{ object.name }}</p>
+                <p class="description">Created by: {{ object.user }}</p>
+                <p class="description">Due date: {{ object.due_date }}</p>
+                <p class="description">Description: {{ object.description }}</p>
+                <p class="description">Task should be executed by:</p>
+                <p class="description">
+                    {% for exec in object.executor.all %}
+                        <a href="{% url 'profile-view user' pk=exec.pk %}">{{ exec.username }}</a>,
+                    {% endfor %}
+                </p>
+                <p class="description">attached file by author: {{ object.attached_file_by_author }}</p>
+                <p class="description">attached file by executor: {{ object.attached_file_by_executor }}</p>
+                <!-- Edit/Delete buttons -->
+                <div class="buttons">
+                        <a href="{% url 'task edit' pk=object.pk %}" class="edit-button">Edit</a>
+                        <a href="#" class="delete-button">Delete</a>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

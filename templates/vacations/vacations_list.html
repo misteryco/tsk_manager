@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+{% block content_page %}
+    {% if total_vacations == 0 %}
+        <!-- Display paragraph: If there are no cars yet-->
+        <p class="no-articles">No vacations yet</p>
+    {% else %}
+        <section id="catalogue">
+            <h1>Total vacations = {{ total_vacations }}</h1>
+
+            {% for vacation in object_list %}
+                {% if vacation.approved %}
+                    <div class="car-card">
+
+                        <a style="color:red" href="{% url "vacations calendar" %}">{{ vacation.start_date }} ->
+                            end: {{ vacation.end_date }}</a>
+                        <h1 style="color:white">requested by : {{ vacation.user }}</h1>
+                        <h1 style="color:white">from department : {{ vacation.user.role }}</h1>
+                        {% if request.user == vacation.user %}
+                            <a style="color:cornflowerblue"
+                               href="{% url 'vacation details' pk=vacation.pk %}">Details</a>
+                        {% endif %}
+                        {% if request.user.level == "team_lead"  and request.user.role == vacation.user.role %}
+                            <a style="color:red"
+                               href="{% url 'vacation approve' pk=vacation.pk %}">Disapprove</a>
+                        {% endif %}
+
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </section>
+
+        <section id="catalogue">
+            <h1>AWAITING APPROVAL</h1>
+            {% for vacation in waiting_approval_vacations %}
+                <div class="car-card">
+                    {% if request.user.level == 'team_lead' and request.user.role == vacation.user.role %}
+                        <a style="color:red" href="{% url "vacations calendar" %}">{{ vacation.start_date }} ->
+                            end: {{ vacation.end_date }}</a>
+                        <h1 style="color:white">requested by : {{ vacation.user }}</h1>
+                        <h1 style="color:white">from department : {{ vacation.user.role }}</h1>
+                        <a style="color:greenyellow"
+                           href="{% url 'vacation approve' pk=vacation.pk %}">Approve this vacation</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+        </section>
+    {% endif %}
+
+{% endblock %}

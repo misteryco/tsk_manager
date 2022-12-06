@@ -1,0 +1,13 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content_page %}
+
+
+    <form method=post>
+        {{ form.as_p }}
+        {% csrf_token %}
+        <input class="btn submit" type="submit" value="Create New Vacation">
+    </form>
+
+
+{% endblock %}
