@@ -11,6 +11,9 @@ urlpatterns = [
     path('accounts/', include('TaskManager.accounts.urls')),
     path('tasks/', include('TaskManager.tasks.urls')),
     path('vacations/', include('TaskManager.vacations.urls')),
+    # TODO: Fix this 'common' path
+    # probably needed later
+    # path('common/', include('TaskManager.common.urls')),
 ]
 
 if settings.DEBUG:
