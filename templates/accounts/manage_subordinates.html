@@ -1,0 +1,37 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content_page %}
+    <section id="catalogue">
+        <div class="car-card">
+            {% if request.user.is_authenticated %}
+                {% if request.user.is_general_manager %}
+                    <h3>List of new subordinates to add:</h3>
+                    <ul>
+                        {% for subordinate in subordinates_to_add %}
+                            <li style="color:white">
+                                <a style="color:white"
+                                   href="{% url 'profile-view user' pk=subordinate.pk %}">new
+                                    employee: {{ subordinate.username }} with email:{{ subordinate.email }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    </div>
+                {% endif %}
+
+                <div class="car-card">
+                <h3>List of subordinates:</h3>
+                <ul>
+                    {% for subordinate in subordinates_to_manage %}
+                        <li style="color:white">
+                            <a style="color:white"
+                               href="{% url 'profile-view user' pk=subordinate.pk %}">employee: {{ subordinate.get_full_name }},</a>
+                            <p style="color:white">- role: {{ subordinate.role }}</p>
+                            <p style="color:white">- level: {{ subordinate.level }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            </div>
+    </section>
+
+{% endblock %}
