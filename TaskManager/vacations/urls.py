@@ -10,7 +10,6 @@ urlpatterns = [
     path('<int:pk>/', include([
         path('details/', VacationDetailsView.as_view(), name='vacation details'),
         path('edit/', vacation_edit_view, name='vacation edit'),
-        # path('delete/', VacationDelete.as_view(), name='vacation delete'),
         path('delete/', vacation_delete, name='vacation delete'),
         path('change_status/', vacation_approve_disapprove, name='vacation approve'),
         path('change_status/', vacation_approve_disapprove, name='vacation approve'),

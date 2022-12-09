@@ -46,13 +46,12 @@ class Task(models.Model):
     )
 
     attached_file_by_author = models.FileField(
-        # upload_to='uploads/author_files',
         upload_to='',
         null=True,
         blank=True,
     )
     attached_file_by_executor = models.FileField(
-        upload_to='uploads/executor_files',
+        upload_to='',
         null=True,
         blank=True,
     )

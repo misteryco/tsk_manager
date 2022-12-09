@@ -19,13 +19,20 @@
                         <a href="{% url 'profile-view user' pk=exec.pk %}">{{ exec.username }}</a>,
                     {% endfor %}
                 </p>
-                <p class="description">attached file by author: {{ object.attached_file_by_author }}</p>
-                <p class="description">attached file by executor: {{ object.attached_file_by_executor }}</p>
+                {% if object.attached_file_by_author %}
+                    <p class="description">attached file by author:
+                        <a href="{{ object.attached_file_by_author.url }}">{{ object.attached_file_by_author }}</a>
+                    </p>
+                {% endif %}
+                {% if object.attached_file_by_executor %}
+                    <p class="description">attached file by executor:
+                        <a href="{{ object.attached_file_by_executor.url }}">{{ object.attached_file_by_executor }}</a>
+                    </p>
+                {% endif %}
                 <!-- Edit/Delete buttons -->
                 <div class="buttons">
-                        <a href="{% url 'task edit' pk=object.pk %}" class="edit-button">Edit</a>
-                        <a href="#" class="delete-button">Delete</a>
-
+                    <a href="{% url 'task edit' pk=object.pk %}" class="edit-button">Edit</a>
+                    <a href="{% url 'task delete' pk=object.pk %}" class="delete-button">Delete</a>
                 </div>
             </div>
         </div>

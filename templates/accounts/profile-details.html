@@ -20,6 +20,9 @@
                 <p class="description">Level: {{ object.level }}</p>
                 <!-- Edit/Delete buttons -->
                 <div class="buttons">
+                    {% if request.user == object %}
+                        <a href="{% url 'password-edit user' pk=object.pk %}" class="edit-button">Change Password</a>
+                    {% endif %}
 
                     {% if is_general_manager %}
                         <a href="{% url 'profile-edit user' pk=object.pk %}" class="edit-button">Edit</a>
@@ -37,7 +40,6 @@
                                 Task name: {{ task.name }},</a>
                         </li>
                     {% endfor %}
-                <p class="description">
             </div>
         </div>
     </section>

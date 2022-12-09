@@ -9,8 +9,8 @@ class VacationBaseForm(ModelForm):
         model = Vacation
         exclude = ('user',)
         widgets = {
-            'start_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type': 'date', }),
-            'end_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type': 'date', }),
+            'start_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type-date': 'date', }),
+            'end_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type-date': 'date', }),
         }
 
 
@@ -18,6 +18,10 @@ class VacationCreateForm(VacationBaseForm):
     class Meta:
         model = Vacation
         exclude = ('user', 'approved')
+        widgets = {
+            'start_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type-date': 'date', }),
+            'end_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type-date': 'date', }),
+        }
 
 
 class VacationEditForm(VacationBaseForm):
@@ -29,3 +33,7 @@ class VacationEditForm(VacationBaseForm):
     class Meta:
         model = Vacation
         exclude = ('user', 'approved')
+        widgets = {
+            'start_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type-date': 'date', }),
+            'end_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type-date': 'date', }),
+        }

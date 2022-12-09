@@ -4,13 +4,13 @@
 
     <!-- edit car form -->
     <section id="create-page" class="auth">
-        <form id="create" method="post">
+        <form id="create" method="post" enctype="multipart/form-data">
             <div class="container">
 
                 <h1>Edit Task</h1>
                 {{ form }}
                 {% csrf_token %}
-                <input class="btn submit" type="submit" value="Edit Task">
+                <input class="btn submit" type="submit" value="Save Task">
             </div>
         </form>
     </section>
