@@ -6,6 +6,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'style/style.css' %}"/>
+
+    {#added some date for callendar#}
+    {% if calendar %}
+{#        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">#}
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+        <link rel="stylesheet" type="text/css" href="{% static 'style/table_style.css' %}">
+    {% endif %}
+    {#end of callendar data #}
+
     <title>TaskManager</title>
 </head>
 
@@ -16,14 +25,11 @@
         <!-- Navigation Bar -->
         <h1><a class="index-navigation" href="{% url 'home page' %}"><span>T</span>ASK <span>M</span>ANAGER</a></h1>
         <nav>
-            {#            {% if not profile %}#}
-            <!-- if the user has not created a profile -->
-            {#            <a href="{% url 'register user' %}">Register</a>#}
-            {#            {% else %}#}
-            <!-- if the user has created a profile -->
             {% if request.user.is_authenticated %}
-                <a href="{% url 'vacations list' %}">Vacations</a>
-                {% if vacations %}
+                {% if not vacations %}
+                    <a href="{% url 'vacations list' %}">Vacations Planner</a>
+                    <p>|</p>
+                {% else %}
                     <a href="{% url 'vacation create' %}">Create Vacation</a>
                     <a href="{% url 'vacations calendar' %}">Calendar Vacations</a>
                     <p>|</p>
@@ -32,6 +38,10 @@
                 <a href="{% url 'task create' %}">Create Task</a>
                 <p>|</p>
                 <a href="{% url 'profile-view user' pk=request.user.pk %}">Profile</a>
+                {% if request.user.level == 'team_lead' %}
+                    <a href="{% url 'manage subordinates' %}">Manage subordinates</a>
+                    <p>|</p>
+                {% endif %}
                 <a href="{% url 'logout user' %}">Log Out</a>
             {% else %}
                 <a href="{% url 'register user' %}">Register</a>
@@ -47,7 +57,7 @@
 
     <!-- footer -->
     <footer>
-        &copy;thesis works 2022. All rights reserved.
+        &copy;Thesis works 2022. All some rights reserved.
     </footer>
 
 </div>

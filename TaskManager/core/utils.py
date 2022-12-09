@@ -13,16 +13,13 @@ class Calendar(HTMLCalendar):
     # formats a day as a td
     # filter events by date and adds them as li
     def formatday(self, day, month, year, vacations):
-        # if day != 0:
-        #     current_date = date(year, month, day)
-        # else:
-        #     current_date = date(year, month, 1)
+
         current_date = date(year, month, day) if day != 0 else date(year, month, 1)
 
         events_per_day = vacations.filter(start_date__lte=current_date, end_date__gte=current_date)
         d = ''
+
         for event in events_per_day:
-            print(f"--->{event.start_date}")
             d += f'<li> "{event.user.first_name} {event.user.last_name}" in vacation from {event.start_date} till' \
                  f' {event.end_date} </li>'
 

@@ -1,54 +1,49 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% block content_page %}
-    <section id="catalogue">
-        <div class="car-card">
-            {% if request.user.is_authenticated %}
-                <h3>List of all users:</h3>
-                <ul>
-                    {% for user in object_list %}
-                        <li>
-                            {% if user == request.user %}
-                                <h1>Logged user : {{ user.username }}</h1>
-                                <strong>
-                                    <a href="{% url 'profile-view user' pk=user.pk %}">{{ user.email }}</a>
-                                </strong>
-                            {% else %}
-                                <a href="{% url 'profile-view user' pk=user.pk %}">{{ user.email }}</a>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
 
-                </ul>
-
-            {% else %}
-                <h1>
-                    <a href="{% url 'login user' %}">Log In</a>
-                </h1>
-
-                <h1>
-                    <a href="{% url 'register user' %}">Register</a>
-                </h1>
-            {% endif %}
+    <section id="index-headline">
+        <div class="index-message">
+            <h2>The <span>Task Management</span> system welcomes you!</h2>
         </div>
+
+        <img src="{% static 'images/task_mng_start_600x600.png' %}" alt="task management image">
+        {#        <img src="{% static 'images/car-index.png' %}" alt="car">#}
     </section>
-    <section>
+    {#    <section id="index-headline">#}
+    <div class="index-message">
+        <h3>Company News</h3>
+    </div>
+    {#    </section>#}
+
+
+
+    <section id="catalogue">
         {% for article in news %}
+            <div class="car-card">
+                <h3 style="color:white">{{ article.news_Title }}</h3>
+                <h1 style="color:white;max-width: 25em;">{{ article.news_article }}</h1>
+                <h5 style="color:white;">Comments:</h5>
+                {% for comment in article.newscomment_set.all %}
+                    <div style="border-width:1px; border-style:solid; border-color:white; padding: 1em;">
+                        <h4 style="color:white; text-align:left;max-width: 100%;">
+                            From {{ comment.comment_user.get_full_name }}:</h4>
+                        <h5 style="color:white; text-align:left;"> {{ comment.news_comment }}</h5>
+                        <h6 style="color:greenyellow; text-align:left;">{{ comment.date_and_time }}</h6>
+                    </div>
+                {% endfor %}
+                {% if request.user.is_authenticated %}
+                    <form method="post" action="{% url 'comment article' pk=article.pk %}">
+                        {{ comment_form.news_comment }}
+                        {% csrf_token %}
+                        <button type="submit">comment</button>
 
-            <h1 style="color:white">{{ article.news_Title }}</h1>
-            <h1 style="color:white">{{ article.news_article }}</h1>
-            <h3 style="color:red"> Comment this article</h3>
-            {% for comment in article.newscomment_set.all %}
-                <h1 style="color:greenyellow">{{ comment.news_comment }} from {{ comment.comment_date_and_time }} with author: {{ comment.comment_user }}</h1>
-            {% endfor %}
-            <form method="post" action="{% url 'comment article' pk=article.pk %}">
-                {{ comment_form.news_comment }}
-                {#                <input type="text" id="commented_section" name="commented_section" value="{{article.pk}}" />#}
-                {% csrf_token %}
-                <button type="submit">Post</button>
-
-            </form>
+                    </form>
+                {% endif %}
+            </div>
+            {#            </div>#}
         {% endfor %}
+
     </section>
 
 {% endblock %}

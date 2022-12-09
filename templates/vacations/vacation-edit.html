@@ -10,7 +10,15 @@
                 <h1>Edit Vacation</h1>
                 {{ form }}
                 {% csrf_token %}
-                <input class="btn submit" type="submit" value="Edit Profile">
+                {% if vacation.approved %}
+                    <h2 style="color:green">Your Vacation is approved.</h2>
+
+                    <h2 style="color:white">If you change your vacation dates, vacation will wait for approval
+                        again.</h2>
+
+                {% else %}
+                {% endif %}
+                <input class="btn submit" type="submit" value="Change Dates">
             </div>
         </form>
     </section>

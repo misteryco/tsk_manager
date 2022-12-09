@@ -11,7 +11,7 @@ from django.utils.safestring import mark_safe
 from django.views import generic as views
 
 from TaskManager.core.utils import Calendar
-from TaskManager.vacations.forms import VacationCreateForm, VacationEditForm, VacationEditForTeamLead
+from TaskManager.vacations.forms import VacationCreateForm, VacationEditForm
 from TaskManager.vacations.models import Vacation
 
 
@@ -81,6 +81,7 @@ class CalendarView(views.ListView):
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
+        # context['user'] = self.request.user
         return context
 
 
@@ -89,37 +90,26 @@ class VacationDetailsView(views.DetailView):
     model = Vacation
 
 
-class VacationEditView(views.UpdateView):
-    template_name = 'vacations/vacation-edit.html'
-    model = Vacation
-    fields = ['start_date', 'end_date', ]
-
-    def get_user_level(self):
-        if self.request.user.level == 'team_lead':
-            self.fields.append('approved')
-
-    def get_success_url(self):
-        return reverse_lazy(
-            'vacation details',
-            kwargs={'pk': self.object.pk})
-
-
 @login_required
 def vacation_edit_view(request, pk):
-    user_level = request.user.level
     vacation = Vacation.objects.filter(pk=pk).get()
     if request.method == 'POST':
         form = VacationEditForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('vacation details')
+            new_start_date = form.cleaned_data['start_date']
+            new_end_date = form.cleaned_data['end_date']
+            if new_start_date != vacation.start_date or new_end_date != vacation.end_date:
+                vacation.start_date = new_start_date
+                vacation.end_date = new_end_date
+                vacation.approved = 0
+                vacation.save()
+            return redirect('vacation details', pk=pk)
     else:
-        if user_level == 'team_lead':
-            form = VacationEditForm(instance=vacation)
-        else:
-            form = VacationEditForTeamLead(instance=vacation)
+        form = VacationEditForm(instance=vacation)
+
     context = {
-        "form": form,
+        'form': form,
+        'vacation': vacation,
     }
     return render(request, template_name='vacations/vacation-edit.html', context=context)
 
@@ -131,4 +121,15 @@ def vacation_approve_disapprove(request, pk):
     else:
         vacation.approved = False
     vacation.save()
+    return redirect('vacations list')
+
+
+class VacationDelete(views.DeleteView):
+    model = Vacation
+    success_url = reverse_lazy('vacations list')
+
+
+def vacation_delete(request, pk):
+    vacation = Vacation.objects.filter(pk=pk).get()
+    vacation.delete()
     return redirect('vacations list')

@@ -9,14 +9,14 @@
                 <!-- user username -->
                 <p class="description">Vacation Id: {{ object.pk }}</p>
                 <!-- user email -->
-                <p class="description">Created by: {{ object.user }}</p>
+                <p class="description">Created by: {{ object.user.get_full_name }}</p>
                 <p class="description">Approved status: {{ object.approved }}</p>
                 <p class="description">Vacation start date: {{ object.start_date }}</p>
                 <p class="description">Vacation end date: {{ object.end_date }}</p>
                 <!-- Edit/Delete buttons -->
                 <div class="buttons">
                     <a href="{% url 'vacation edit' pk=object.pk %}" class="edit-button">Edit</a>
-                    <a href="#" class="delete-button">Delete</a>
+                    <a href="{% url 'vacation delete' pk=object.pk %}" class="delete-button">Delete</a>
 
                 </div>
             </div>

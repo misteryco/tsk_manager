@@ -22,7 +22,7 @@ class ShortNewsArticle(models.Model):
         blank=False,
     )
 
-    date_and_time_of_article = models.DateTimeField(
+    date_and_time = models.DateTimeField(
         auto_now_add=True,
         null=False,
         blank=False,
@@ -32,6 +32,9 @@ class ShortNewsArticle(models.Model):
         UserModel,
         on_delete=models.RESTRICT
     )
+
+    def __str__(self):
+        return f'{self.news_Title} by {self.user}'
 
 
 class TaskComment(models.Model):
@@ -50,7 +53,7 @@ class TaskComment(models.Model):
         blank=True,
     )
 
-    comment_date_and_time = models.DateTimeField(
+    date_and_time = models.DateTimeField(
         auto_now_add=True,
         null=False,
         blank=False,
@@ -77,7 +80,7 @@ class NewsComment(models.Model):
         blank=True,
     )
 
-    comment_date_and_time = models.DateTimeField(
+    date_and_time = models.DateTimeField(
         auto_now_add=True,
         null=False,
         blank=False,

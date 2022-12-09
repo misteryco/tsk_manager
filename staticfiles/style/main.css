@@ -101,6 +101,19 @@ a {
     font-family: 'Monoton', cursive;
 }
 
+.index-message h3 {
+    color: #ffffff;
+    font-size: 200%;
+    line-height: 1;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: uppercase;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    font-family: 'Monoton', cursive;
+}
+
 .index-message h2>span {
     color: #3387C7;
 }
@@ -128,6 +141,8 @@ a {
     border-radius: 15px;
     float: left;
     height: auto;
+    max-width: 500px;
+    min-width: 400px;
 }
 
 .image-wrap {

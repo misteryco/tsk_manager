@@ -8,8 +8,8 @@ UserModel = get_user_model()
 
 @admin.register(UserModel)
 class AppUserAdmin(auth_admin.UserAdmin):
-    list_display = ('email', 'is_staff', 'last_login', 'is_general_manager')
-    list_filter = ('is_staff',)
+    list_display = ('email', 'is_staff', 'is_superuser', 'last_login', 'is_general_manager')
+    list_filter = ('is_staff', 'is_superuser', 'is_general_manager',)
     ordering = ('email',)
     form = EditUserForm
     add_form = CreateUserForm

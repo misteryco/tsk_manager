@@ -6,14 +6,6 @@
         <h1>User Profile Details</h1>
         <div class="info-section">
             <div class="car-header">
-                {#                {% if not profile.profile_picture %}#}
-                {#                    <!-- default profile image (if the user does NOT have any)-->#}
-                {#                    <img class="car-img" src="{% static 'images/default-profile.png' %}" alt='profile-image'/>#}
-                {#                {% else %}#}
-                {#                    <!-- if the user has a profile image -->#}
-                {#                    <img class="car-img" src="{{ profile.profile_picture }}" alt='profile-image'/>#}
-                {#                {% endif %}#}
-
                 {% if object.get_full_name %}
                     <!-- user full name (if any) -->
                     <h1>{{ object.get_full_name }}</h1>
@@ -28,27 +20,24 @@
                 <p class="description">Level: {{ object.level }}</p>
                 <!-- Edit/Delete buttons -->
                 <div class="buttons">
+
                     {% if is_general_manager %}
                         <a href="{% url 'profile-edit user' pk=object.pk %}" class="edit-button">Edit</a>
                         <a href="{% url 'profile-delete user' pk=object.pk %}" class="delete-button">Delete</a>
                     {% endif %}
                 </div>
-
+                {% if not approved %}
+                    <h1>Waiting for approval from manager</h1>
+                {% endif %}
                 <p class="description">
+                    List of task created by user:
                     {% for task in object.task_set.all %}
-                        List of task created by user:
-                        <p class="description">-> task id: {{ task.pk }}: Task name: {{ task.name }},</p>
-                        </p>
+                        <li style="color:white">
+                            <a style="color:white" href="{% url 'task detail' pk=task.pk %}">task id: {{ task.pk }}:
+                                Task name: {{ task.name }},</a>
+                        </li>
                     {% endfor %}
                 <p class="description">
-{#                    {% if is_general_manager %}#}
-{#                        {% for vacation in object.task_set.all %}#}
-{#                            List of task created by user:#}
-{#                            <p class="description">-> task id: {{ task.pk }}: Task name: {{ task.name }},</p>#}
-{#                            </p>#}
-{#                        {% endfor %}#}
-{#                    {% endif %}#}
-
             </div>
         </div>
     </section>

@@ -1,8 +1,10 @@
-from django.contrib.auth import views as auth_views, get_user_model
+from django.contrib.auth import views as auth_views, mixins as auth_mixins, get_user_model, authenticate, login
+# from django.contrib.auth import mixins as auth_mixins
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import generic as views
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from TaskManager.accounts.forms import CreateUserForm, ChangeUserPasswordForm
 
@@ -19,12 +21,17 @@ class CreateUserView(views.CreateView):
 
     success_url = reverse_lazy('home page')
 
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect(self.success_url)
+
 
 class SignOutView(auth_views.LogoutView):
     next_page = reverse_lazy('home page')
 
 
-class UserDetailsView(views.DetailView):
+class UserDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
     template_name = 'accounts/profile-details.html'
     model = UserModel
 
@@ -33,6 +40,7 @@ class UserDetailsView(views.DetailView):
         print(self.request.user)
         # self.request.user is logged now user
         context['is_general_manager'] = self.request.user.is_general_manager
+        context['approved'] = self.request.user.role
 
         return context
 
@@ -63,3 +71,19 @@ class DeleteUserView(views.DeleteView):
     template_name = 'accounts/profile-delete.html'
     model = UserModel
     success_url = reverse_lazy('home page')
+
+
+class ManageSubordinatesView(views.ListView):
+    model = UserModel
+    template_name = 'accounts/manage_subordinates.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['subordinates_to_add'] = self.model.objects. \
+            exclude(level='junior'). \
+            exclude(level='team_lead'). \
+            exclude(level='senior')
+        context['subordinates_to_manage'] = self.model.objects.filter(role=self.request.user.role).exclude(
+            level='team_lead')
+
+        return context

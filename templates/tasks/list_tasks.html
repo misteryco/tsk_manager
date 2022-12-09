@@ -25,15 +25,24 @@
                 <!-- car type -->
                 <h1>Due date: {{ task.due_date }}</h1>
                 <!-- car model -->
-                <h1>Description: {{ task.description }}</h1>
+                <h1>Description: {{ task.description|truncatewords:4 }}</h1>
+                <h1>Priority: {{ task.priority }}</h1>
                 <h3>Task should be executed by:</h3>
                 <h1>
                     {% for exec in task.executor.all %}
-                        <a href="{% url 'profile-view user' pk=exec.pk %}">{{ exec.username }}</a>,
+                        <a href="{% url 'profile-view user' pk=exec.pk %}">{{ exec.get_full_name }}</a>,
                     {% endfor %}
                 </h1>
-                <h1>attached file by author: {{ task.attached_file_by_author }}</h1>
-                <h1>attached file by executor: {{ task.attached_file_by_executor }}</h1>
+                {% if task.attached_file_by_author %}
+                    <h1>attached file by author: {{ task.attached_file_by_author }}</h1>
+                {% else %}
+                    <h1>there is no attached file by author for this task</h1>
+                {% endif %}
+                {% if task.attached_file_by_author %}
+                    <h1>attached file by executor: {{ task.attached_file_by_executor }}</h1>
+                {% else %}
+                    <h1>there is no attached file by executor for this task</h1>
+                {% endif %}
                 <div class="details-buttons">
                     <!-- car details button -->
                     <a href="{% url 'task detail' pk=task.pk %}" class="details-btn">Details</a>
