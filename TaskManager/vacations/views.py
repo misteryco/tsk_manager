@@ -5,7 +5,6 @@ from datetime import date, datetime, timedelta
 from django.contrib.auth import mixins as auth_mixins
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from django.template.context_processors import request
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.views import generic as views
@@ -122,11 +121,6 @@ def vacation_approve_disapprove(request, pk):
         vacation.approved = False
     vacation.save()
     return redirect('vacations list')
-
-
-class VacationDelete(views.DeleteView):
-    model = Vacation
-    success_url = reverse_lazy('vacations list')
 
 
 def vacation_delete(request, pk):

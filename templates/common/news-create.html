@@ -2,14 +2,17 @@
 {% load static %}
 {% load placeholders %}
 {% block content_page %}
-    <form method="post">
-        Shows all with labels
-        {{ form.as_p }}
-
-        {% csrf_token %}
-        <input class="btn submit" type="submit" value="Save the article">
-        {#        <button>Register</button>#}
-
-
-    </form>
+    <section id="register-page" class="content auth">
+        <form id="register" method="post">
+            <div class="container">
+                <div class="brand-logo"></div>
+                <h1>Create News</h1>
+                <form method="post">
+                    {{ form.as_p }}
+                    {% csrf_token %}
+                    <input class="btn submit" type="submit" value="Save the article">
+                </form>
+            </div>
+        </form>
+    </section>
 {% endblock %}

@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import mixins as auth_mixins
 from django.contrib.auth import views as auth_views, get_user_model
 from django.urls import reverse_lazy
-from django.views import generic as views
+from django.views import generic as views, View
 
-from TaskManager.common.forms import NewsCommentForm, NewsCreateForm
+from TaskManager.common.forms import NewsCommentForm, NewsCreateForm, EditNewsForm
 from TaskManager.common.models import ShortNewsArticle
 
 UserModel = get_user_model()
@@ -76,3 +76,21 @@ def home_page(request):
         'comment_form': comment_form,
     }
     return render(request, template_name='index.html', context=context)
+
+
+class NewsDetailView(auth_mixins.LoginRequiredMixin, views.DetailView):
+    template_name = 'common/news-details.html'
+    model = ShortNewsArticle
+
+
+def news_delete(request, pk):
+    vacation = ShortNewsArticle.objects.filter(pk=pk).get()
+    vacation.delete()
+    return redirect('home page')
+
+
+class NewsEditView(views.UpdateView):
+    model = ShortNewsArticle
+    template_name = 'common/news-edit.html'
+    fields = ['news_Title', 'news_article', ]
+    success_url = reverse_lazy('home page')

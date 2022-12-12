@@ -24,7 +24,7 @@
                 <h3 style="color:white">{{ article.news_Title }}</h3>
                 <h1 style="color:white;max-width: 25em;">{{ article.news_article }}</h1>
                 <h5 style="color:white;">Comments:</h5>
-                {% for comment in article.newscomment_set.all %}
+                {% for comment in article.newscomment_set.all|slice:"0:3" %}
                     <div style="border-width:1px; border-style:solid; border-color:white; padding: 1em;">
                         <h4 style="color:white; text-align:left;max-width: 100%;">
                             From {{ comment.comment_user.get_full_name }}:</h4>
@@ -32,16 +32,30 @@
                         <h6 style="color:greenyellow; text-align:left;">{{ comment.date_and_time }}</h6>
                     </div>
                 {% endfor %}
-                {% if request.user.is_authenticated %}
-                    <form method="post" action="{% url 'comment article' pk=article.pk %}">
-                        {{ comment_form.news_comment }}
-                        {% csrf_token %}
-                        <button type="submit">comment</button>
-
-                    </form>
+                {% if  article.newscomment_set.all.count > 3 %}
+                    <a style="color:white;max-width: 25em; text-align:center" href="{% url 'details article' pk=article.pk %}">Click for
+                        for more comments....</a>
                 {% endif %}
+                <div style="color:white; display: inline-block; text-align: center;">
+                    {% if request.user.is_authenticated %}
+                        <form method="post" action="{% url 'comment article' pk=article.pk %}">
+                            {{ comment_form.news_comment }}
+                            {% csrf_token %}
+                            <button type="submit" style="color:white; display: inline-block;">comment</button>
+                        </form>
+                    {% endif %}
+
+                    {% if request.user.is_general_manager %}
+                        <button
+                                style="color:white;"
+                                onclick="location.href='{% url 'edit article' pk=article.pk %}'"
+                                type="button">edit
+                        </button>
+                    {% endif %}
+                </div>
+
             </div>
-            {#            </div>#}
+
         {% endfor %}
 
     </section>

@@ -25,6 +25,7 @@
 
         <!-- Navigation Bar -->
         <h1><a class="index-navigation" href="{% url 'home page' %}"><span>T</span>ASK <span>M</span>ANAGER</a></h1>
+        <h5>{% now "jS F Y H:i" %}</h5>
         <nav>
             {% if request.user.is_authenticated %}
                 {% if not total_vacations %}
@@ -55,8 +56,15 @@
                 {% endif %}
                 <a href="{% url 'profile-view user' pk=request.user.pk %}">Profile</a>
                 {% if request.user.is_general_manager %}
-                    <a href="{% url 'manage subordinates' %}">Manage subordinates</a>
-                    <p>|</p>
+                    {% if not total_vacations == 0 %}
+                        <a href="{% url 'manage subordinates' %}">Manage subordinates</a>
+                        <p>|</p>
+                        <a href="{% url 'news create' %}">Create News</a>
+                        <p>|</p>
+                    {% else %}
+                        <a href="{% url 'manage subordinates' %}">Manage subordinates</a>
+                        <p>|</p>
+                    {% endif %}
                 {% endif %}
                 <a href="{% url 'logout user' %}">Log Out</a>
             {% else %}

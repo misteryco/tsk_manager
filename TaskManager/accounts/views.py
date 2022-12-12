@@ -83,7 +83,5 @@ class ManageSubordinatesView(views.ListView):
             exclude(level='junior'). \
             exclude(level='team_lead'). \
             exclude(level='senior')
-        context['subordinates_to_manage'] = self.model.objects.filter(role=self.request.user.role).exclude(
-            level='team_lead')
-
+        context['subordinates_to_manage'] = self.model.objects.all()
         return context

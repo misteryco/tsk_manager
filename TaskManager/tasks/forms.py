@@ -1,4 +1,4 @@
-from django.forms import ModelForm, Form, DateInput
+from django.forms import ModelForm, Form, DateInput, SelectMultiple
 from django import forms
 
 from TaskManager.tasks.models import Task
@@ -11,7 +11,8 @@ class TasksCreateForm(ModelForm):
         model = Task
         exclude = ('user', 'attached_file_by_executor')
         widgets = {
-            'due_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type-date': 'date', }),
+            'due_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type': 'date', }),
+            'executor': SelectMultiple(attrs={'style': 'height: 80px;', }),
         }
 
 

@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.forms import ModelForm, DateInput
 # from django import forms
 
@@ -9,8 +11,8 @@ class VacationBaseForm(ModelForm):
         model = Vacation
         exclude = ('user',)
         widgets = {
-            'start_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type-date': 'date', }),
-            'end_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type-date': 'date', }),
+            'start_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type': 'date', }),
+            'end_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type': 'date', }),
         }
 
 
@@ -19,8 +21,8 @@ class VacationCreateForm(VacationBaseForm):
         model = Vacation
         exclude = ('user', 'approved')
         widgets = {
-            'start_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type-date': 'date', }),
-            'end_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type-date': 'date', }),
+            'start_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type': 'date', }),
+            'end_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type': 'date', }),
         }
 
 
@@ -34,6 +36,7 @@ class VacationEditForm(VacationBaseForm):
         model = Vacation
         exclude = ('user', 'approved')
         widgets = {
-            'start_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type-date': 'date', }),
-            'end_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type-date': 'date', }),
+            'start_date': DateInput(
+                attrs={'placeholder': 'mm/dd/yyyy', 'type': 'date', }),
+            'end_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type': 'date', }),
         }

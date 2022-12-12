@@ -22,14 +22,13 @@
                 <h3>List of subordinates:</h3>
                 <ul>
                     {% for subordinate in subordinates_to_manage %}
-                        {% if subordinate.name %}
                         <li style="color:white">
                             <a style="color:white"
                                href="{% url 'profile-view user' pk=subordinate.pk %}">employee: {{ subordinate.get_full_name }},</a>
                             <p style="color:white">- role: {{ subordinate.role }}</p>
                             <p style="color:white">- level: {{ subordinate.level }}</p>
                         </li>
-                        {% endif %}
+
                     {% endfor %}
                 </ul>
             {% endif %}

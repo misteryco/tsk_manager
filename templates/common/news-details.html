@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content_page %}
+    <!-- profile details section -->
+    <section id="car-details">
+        <h1>Article </h1>
+        <div class="info-section">
+            <div class="car-header">
+                <!-- user username -->
+                <p class="description">Title: {{ object.news_Title }}</p>
+                <!-- user email -->
+                <p class="description">Atricle: {{ object.news_article }}</p>
+                <!-- user age -->
+                <p>Comments:</p>
+                {% for comment in object.newscomment_set.all %}
+                    <div style="border-width:1px; border-style:solid; border-color:white; padding: 1em;">
+                        <h4 style="color:white; text-align:left;max-width: 100%;">
+                            {{ comment.comment_user.get_full_name }} commented:</h4>
+                        <h5 style="color:white; text-align:left;"> {{ comment.news_comment }}</h5>
+                        <h6 style="color:greenyellow; text-align:left;">{{ comment.date_and_time }}</h6>
+                    </div>
+                {% endfor %}
+
+                {% if request.user.is_general_manager %}
+                    <div class="buttons">
+                        <a href="{% url 'edit article' pk=object.pk %}" class="edit-button">Edit</a>
+                        <a href="{% url 'delete article' pk=object.pk %}" class="delete-button">Delete</a>
+                    </div>
+                {% endif %}
+
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

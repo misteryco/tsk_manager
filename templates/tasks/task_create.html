@@ -4,16 +4,19 @@
 
 {% block content_page %}
 
+    <section id="register-page" class="content auth">
+        <form id="register" method="post">
+            <div class="container">
+                <div class="brand-logo"></div>
+                <form method="post" enctype="multipart/form-data">
+                    {{ form.as_p }}
+                    {% csrf_token %}
+                    <input class="btn submit" type="submit" value="Create Task">
+                </form>
 
-    <form method="post" enctype="multipart/form-data">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <input class="btn submit" type="submit" value="Create Task">
-    </form>
-    <script>
-        $(document).ready(function () {
-            $('.datepicker').datepicker();
-        });
-    </script>
+            </div>
+        </form>
+    </section>
+
 {% endblock %}
 
