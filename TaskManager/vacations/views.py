@@ -4,6 +4,9 @@ from datetime import date, datetime, timedelta
 
 from django.contrib.auth import mixins as auth_mixins
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseNotFound
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
@@ -48,7 +51,7 @@ class VacationCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
         return super().form_valid(form)
 
 
-class VacationsListView(views.ListView):
+class VacationsListView(LoginRequiredMixin, views.ListView):
     model = Vacation
     template_name = 'vacations/vacations_list.html'
     context_object_name = 'vacations'
@@ -65,7 +68,7 @@ class VacationsListView(views.ListView):
         return context
 
 
-class CalendarView(views.ListView):
+class CalendarView(LoginRequiredMixin, views.ListView):
     model = Vacation
     template_name = 'vacations/vacations_calendar.html'
 
@@ -84,7 +87,7 @@ class CalendarView(views.ListView):
         return context
 
 
-class VacationDetailsView(views.DetailView):
+class VacationDetailsView(LoginRequiredMixin, views.DetailView):
     template_name = 'vacations/vacation-details.html'
     model = Vacation
 
@@ -113,8 +116,13 @@ def vacation_edit_view(request, pk):
     return render(request, template_name='vacations/vacation-edit.html', context=context)
 
 
+@login_required
 def vacation_approve_disapprove(request, pk):
     vacation = Vacation.objects.filter(pk=pk).get()
+
+    if request.user.level != 'team_lead':
+        raise PermissionDenied()
+
     if not vacation.approved:
         vacation.approved = True
     else:
@@ -123,7 +131,10 @@ def vacation_approve_disapprove(request, pk):
     return redirect('vacations list')
 
 
+@login_required
 def vacation_delete(request, pk):
     vacation = Vacation.objects.filter(pk=pk).get()
+    if request.user != vacation.user:
+        raise PermissionDenied()
     vacation.delete()
     return redirect('vacations list')

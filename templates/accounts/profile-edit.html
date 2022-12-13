@@ -13,9 +13,6 @@
                 <input class="btn submit" type="submit" value="Save Changes">
             </div>
         </form>
-        {% if object.pk %}
-            <a href="{% url 'password-edit user' pk=object.pk %}">Change Password</a>
-        {% endif %}
     </section>
 
 {% endblock %}

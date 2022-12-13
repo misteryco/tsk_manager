@@ -25,7 +25,7 @@
 
         <!-- Navigation Bar -->
         <h1><a class="index-navigation" href="{% url 'home page' %}"><span>T</span>ASK <span>M</span>ANAGER</a></h1>
-        <h5>{% now "jS F Y H:i" %}</h5>
+        <h5>date and time: {% now "jS F Y, H:i" %}</h5>
         <nav>
             {% if request.user.is_authenticated %}
                 {% if not total_vacations %}

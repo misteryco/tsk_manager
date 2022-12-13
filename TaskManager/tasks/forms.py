@@ -1,6 +1,7 @@
 from django.forms import ModelForm, Form, DateInput, SelectMultiple
 from django import forms
 
+from TaskManager.accounts.templatetags.placeholders import placeholder
 from TaskManager.tasks.models import Task
 
 
@@ -13,6 +14,14 @@ class TasksCreateForm(ModelForm):
         widgets = {
             'due_date': DateInput(attrs={'placeholder': 'mm/dd/yyyy', 'type': 'date', }),
             'executor': SelectMultiple(attrs={'style': 'height: 80px;', }),
+            'attached_file_by_author': forms.FileInput(
+                attrs={'accept': 'application/pdf', }),
+            'attached_file_by_executor': forms.FileInput(
+                attrs={'accept': 'application/pdf', }),
+        }
+        labels = {
+            'attached_file_by_author': 'Attach PDF file',
+            'attached_file_by_executor': 'Attach PDF file',
         }
 
 

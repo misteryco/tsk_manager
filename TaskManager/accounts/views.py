@@ -1,12 +1,12 @@
-from django.contrib.auth import views as auth_views, mixins as auth_mixins, get_user_model, authenticate, login
-# from django.contrib.auth import mixins as auth_mixins
-from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
+from django.contrib.auth import views as auth_views, mixins as auth_mixins, get_user_model, login
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
 from django.views import generic as views
-from django.shortcuts import render, redirect
-
+from django.shortcuts import redirect
 from TaskManager.accounts.forms import CreateUserForm, ChangeUserPasswordForm
+from TaskManager.services.ses import SESService
+from TaskManager.services.sqs import SQSService
 
 UserModel = get_user_model()
 
@@ -23,6 +23,10 @@ class CreateUserView(views.CreateView):
 
     def form_valid(self, form):
         user = form.save()
+        # Sending email with AWS-SES service
+        SESService().send_email(user.email)
+        # SQS Services
+        SQSService().send_message(user.email)
         login(self.request, user)
         return redirect(self.success_url)
 
@@ -37,18 +41,23 @@ class UserDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(self.request.user)
-        # self.request.user is logged now user
+        if not self.request.user.is_general_manager:
+            raise PermissionDenied()
         context['is_general_manager'] = self.request.user.is_general_manager
         context['approved'] = self.request.user.role
-
         return context
 
 
-class EditUserView(views.UpdateView):
+class EditUserView(auth_mixins.LoginRequiredMixin, views.UpdateView):
     template_name = 'accounts/profile-edit.html'
     model = UserModel
     fields = ('first_name', 'last_name', 'email', 'role', 'level', 'is_general_manager',)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if not self.request.user.is_general_manager:
+            raise PermissionDenied()
+        return context
 
     def get_success_url(self):
         return reverse_lazy(
@@ -56,7 +65,7 @@ class EditUserView(views.UpdateView):
             kwargs={'pk': self.object.pk})
 
 
-class ChangeUserPasswordView(auth_views.PasswordChangeView):
+class ChangeUserPasswordView(auth_views.PasswordChangeView, UserPassesTestMixin):
     template_name = 'accounts/profile-edit.html'
     form_class = ChangeUserPasswordForm
     model = UserModel
@@ -67,10 +76,16 @@ class ChangeUserPasswordView(auth_views.PasswordChangeView):
             kwargs={'pk': self.request.user.pk})
 
 
-class DeleteUserView(views.DeleteView):
+class DeleteUserView(auth_mixins.LoginRequiredMixin, views.DeleteView):
     template_name = 'accounts/profile-delete.html'
     model = UserModel
     success_url = reverse_lazy('home page')
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        if not self.request.user.is_general_manager:
+            raise PermissionDenied()
+        return context
 
 
 class ManageSubordinatesView(views.ListView):
@@ -79,6 +94,8 @@ class ManageSubordinatesView(views.ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+        if not self.request.user.is_general_manager:
+            raise PermissionDenied()
         context['subordinates_to_add'] = self.model.objects. \
             exclude(level='junior'). \
             exclude(level='team_lead'). \

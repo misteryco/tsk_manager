@@ -3,17 +3,13 @@ from enum import Enum
 
 from django.contrib.auth import get_user_model
 from django.core import validators
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, FileExtensionValidator
 from django.db import models
 
 from TaskManager.core.model_mixins import ChoicesEnumMixin
 from TaskManager.utils.validators import max_file_size_in_five_mb_validator
 
 UserModel = get_user_model()
-
-
-# def user_directory_path(instance, filename):
-#     return ''.format(instance.user.username, filename)
 
 
 class Priority(ChoicesEnumMixin, Enum):
@@ -49,13 +45,13 @@ class Task(models.Model):
     )
 
     attached_file_by_author = models.FileField(
-        upload_to='',
+        upload_to='uploads/',
         null=True,
         blank=True,
         validators=[max_file_size_in_five_mb_validator, ],
     )
     attached_file_by_executor = models.FileField(
-        upload_to='',
+        upload_to='uploads/',
         null=True,
         blank=True,
         validators=[max_file_size_in_five_mb_validator, ],

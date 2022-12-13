@@ -32,7 +32,7 @@ def task_list_funct_view(request):
             Q(name__icontains=search_pattern) |
             Q(description__icontains=search_pattern))
 
-    tasks = tasks.order_by('due_date', 'priority')
+    tasks = tasks.order_by('due_date', 'priority', 'pk')
 
     context = {
         "object_list": tasks,
@@ -42,31 +42,6 @@ def task_list_funct_view(request):
     return render(request, template_name='tasks/list_tasks.html', context=context)
 
 
-class TasksListView(views.ListView, FormView):
-    model = Task
-    template_name = 'tasks/list_tasks.html'
-    form_class = TaskSearchForm
-    search_pattern = None
-    form = form_class()
-    success_url = reverse_lazy('tasks list')
-
-    # success_url = reverse_lazy('tasks list')
-
-    def form_valid(self, form):
-        self.search_pattern = form.cleaned_data['search_in_task_name']
-        return HttpResponse(self.get_context_data)
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        if self.search_pattern:
-            context['object_list'] = context['object_list'].filter(name__icontains=self.search_pattern)
-        context['total_tasks'] = self.model.objects.count
-        context['search_form'] = self.form
-
-        return context
-
-
-# @login_required
 class TasksCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
     template_name = 'tasks/task_create.html'
     form_class = TasksCreateForm
@@ -79,6 +54,26 @@ class TasksCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
         task.save()
         form.save()
         return super().form_valid(form)
+
+
+@login_required
+def task_create_view(request):
+    if request.method == 'GET':
+        form = TasksCreateForm()
+    else:
+        form = TasksCreateForm(request.POST, request.FILES)
+        if form.is_valid():
+            photo = form.save(commit=False)  # form.save return object itself
+            photo.user = request.user
+            photo.save()
+            form.save()
+            return redirect(reverse_lazy('tasks list'))
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'tasks/task_create.html', context)
 
 
 class TaskEditView(views.UpdateView):
