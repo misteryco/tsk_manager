@@ -18,17 +18,14 @@ class HomePage(views.ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        # add_to_context = {'news_2': ShortNewsArticle.objects.all()}
-        news = ShortNewsArticle.objects.all()
+        news = ShortNewsArticle.objects.all().order_by('-pk')
         context['news'] = news
         context['comment_form'] = NewsCommentForm()
-        # context['comment_form'] = NewsCommentForm()
-        # context.update(add_to_context)
         return context
 
 
 class NewsCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
-    template_name = 'common/news-create.html'
+    template_name = 'base/base-create-view.html'
     form_class = NewsCreateForm
 
     success_url = reverse_lazy('home page')
@@ -46,6 +43,8 @@ class NewsCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['form_title'] = 'Create News'
+        context['form__button_title'] = 'CREATE'
         if not self.request.user.is_general_manager:
             raise PermissionDenied()
         return context
