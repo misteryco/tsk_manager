@@ -29,17 +29,20 @@
                         <a href="{% url 'profile-delete user' pk=object.pk %}" class="delete-button">Delete</a>
                     {% endif %}
                 </div>
+                <!-- Approval message -->
                 {% if not approved %}
                     <h1>Waiting for approval from manager</h1>
                 {% endif %}
-                <p class="description">
-                    List of task created by user:
+                <!-- Tasks section -->
+                {% if object.task_set.all %}
+                    <p class="description">List of task created by user:</p>
                     {% for task in object.task_set.all %}
                         <li style="color:white">
                             <a style="color:white" href="{% url 'task detail' pk=task.pk %}">task id: {{ task.pk }}:
                                 Task name: {{ task.name }},</a>
                         </li>
                     {% endfor %}
+                {% endif %}
             </div>
         </div>
     </section>
