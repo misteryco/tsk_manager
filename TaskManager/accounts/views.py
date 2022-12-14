@@ -1,12 +1,10 @@
 from django.contrib.auth import views as auth_views, mixins as auth_mixins, get_user_model, login
-from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
 from django.views import generic as views
 from django.shortcuts import redirect
 from TaskManager.accounts.forms import CreateUserForm, ChangeUserPasswordForm
 from TaskManager.core.services.ses import SESService
-from TaskManager.core.services.sqs import SQSService
 
 UserModel = get_user_model()
 
@@ -23,10 +21,12 @@ class CreateUserView(views.CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        # Sending email with AWS-SES service
+        # Sending informational email for registration through AWS-SES service
         SESService().send_email(user.email)
+        # !!! Not used for the moment !!!
         # SQS Services
-        SQSService().send_message(user.email)
+        # SQSService().send_message(user.email)
+        # !!! Not used for the moment !!!
         login(self.request, user)
         return redirect(self.success_url)
 
@@ -67,7 +67,7 @@ class EditUserView(auth_mixins.LoginRequiredMixin, views.UpdateView):
             kwargs={'pk': self.object.pk})
 
 
-class ChangeUserPasswordView(auth_views.PasswordChangeView, UserPassesTestMixin):
+class ChangeUserPasswordView(auth_views.PasswordChangeView, auth_mixins.UserPassesTestMixin):
     template_name = 'accounts/profile-edit.html'
     form_class = ChangeUserPasswordForm
     model = UserModel
