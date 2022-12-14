@@ -6,11 +6,11 @@
         <form id="create" method="post">
             <div class="container">
 
-                <h1>Create Vacation</h1>
+                <h1>{{ form_title }}</h1>
                 <form method=post>
                     {{ form.as_p }}
                     {% csrf_token %}
-                    <input class="btn submit" type="submit" value="Create">
+                    <input class="btn submit" type="submit" value="{{ form__button_title }}">
                 </form>
             </div>
         </form>
