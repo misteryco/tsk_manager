@@ -8,6 +8,7 @@ class SESService:
         self.key = environ["AWSAccessKeyId"]
         self.secret = environ["AWSSecretKey"]
         self.region = environ["AWSRegion"]
+        self.outgoing_email = environ["OutgoingEmail"]
         self.client = boto3.client(
             'ses',
             aws_access_key_id=self.key,
@@ -17,7 +18,7 @@ class SESService:
 
     def send_email(self, email):
         response = self.client.send_email(
-            Source='jordan.v.dimov@gmail.com',
+            Source=self.outgoing_email,
             Destination={
                 'ToAddresses': [
                     email,
