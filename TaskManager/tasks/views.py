@@ -1,10 +1,9 @@
-from django.contrib.auth import mixins as auth_mixins, get_user_model, mixins
+from django.contrib.auth import mixins as auth_mixins, get_user_model
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic as views
-from django.views.generic import FormView
+
 from django.db.models import Q
 
 from TaskManager.tasks.forms import TasksCreateForm, TaskSearchForm

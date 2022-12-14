@@ -5,8 +5,8 @@ from django.urls import reverse_lazy
 from django.views import generic as views
 from django.shortcuts import redirect
 from TaskManager.accounts.forms import CreateUserForm, ChangeUserPasswordForm
-from TaskManager.services.ses import SESService
-from TaskManager.services.sqs import SQSService
+from TaskManager.core.services.ses import SESService
+from TaskManager.core.services.sqs import SQSService
 
 UserModel = get_user_model()
 
@@ -41,8 +41,10 @@ class UserDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        object_pk = context.get('object').pk
         if not self.request.user.is_general_manager:
-            raise PermissionDenied()
+            if object_pk != self.request.user.pk:
+                raise PermissionDenied()
         context['is_general_manager'] = self.request.user.is_general_manager
         context['approved'] = self.request.user.role
         return context

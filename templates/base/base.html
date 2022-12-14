@@ -40,7 +40,7 @@
                     <a href="{% url 'vacations calendar' %}">Calendar Vacations</a>
                     <p>|</p>
                 {% endif %}
-                {#                    TODO: Show as needed in vacations list page - without #}
+
                 {% if not total_tasks %}
                     <a href="{% url 'tasks list' %}">Tasks</a>
                     <p>|</p>
@@ -71,7 +71,7 @@
                 <a href="{% url 'register user' %}">Register</a>
                 <a href="{% url 'login user' %}">Log In</a>
             {% endif %}
-            {#            {% endif %}#}
+
         </nav>
     </header>
 

@@ -1,13 +1,13 @@
-from datetime import datetime, date
+from datetime import date
 from enum import Enum
 
 from django.contrib.auth import get_user_model
 from django.core import validators
-from django.core.validators import MinValueValidator, FileExtensionValidator
+from django.core.validators import MinValueValidator
 from django.db import models
 
 from TaskManager.core.model_mixins import ChoicesEnumMixin
-from TaskManager.utils.validators import max_file_size_in_five_mb_validator
+from TaskManager.core.validators import max_file_size_in_five_mb_validator
 
 UserModel = get_user_model()
 

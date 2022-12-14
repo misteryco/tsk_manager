@@ -10,8 +10,6 @@ class Calendar(HTMLCalendar):
         self.month = month
         super(Calendar, self).__init__()
 
-    # formats a day as a td
-    # filter events by date and adds them as li
     def formatday(self, day, month, year, vacations):
 
         current_date = date(year, month, day) if day != 0 else date(year, month, 1)

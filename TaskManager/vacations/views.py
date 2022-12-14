@@ -1,12 +1,10 @@
 import calendar
-from calendar import HTMLCalendar
 from datetime import date, datetime, timedelta
 
 from django.contrib.auth import mixins as auth_mixins
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseNotFound
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
