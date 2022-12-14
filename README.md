@@ -2,9 +2,7 @@ Python Web Framework with Django @ SoftUni
 
 This repo was created for the 'Python Web Framework' course at SoftUni. It contains a Django project which is a web app for the final exam.
 
-The main idea behind the project is to create an operational web application which allows users to register, create/edit profiles, create/edit tasks, create/edit 
-
-and manage vacations also the app offers a simple news board with comments on the homepage.
+The main idea behind the project is to create an operational web application which allows users to register, create/edit profiles, create/edit tasks, create/edit and manage vacations also the app offers a simple news board with comments on the homepage.
 
 The project consists of main app called 'TaskManager', static files folder, templates folder, mediafiles folder.
 
