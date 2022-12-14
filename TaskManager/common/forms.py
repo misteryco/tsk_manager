@@ -1,6 +1,6 @@
 from django import forms
 
-from TaskManager.common.models import NewsComment, TaskComment, ShortNewsArticle
+from TaskManager.common.models import NewsComment, ShortNewsArticle
 
 
 class NewsCommentForm(forms.ModelForm):
@@ -9,11 +9,12 @@ class NewsCommentForm(forms.ModelForm):
         fields = ('news_comment',)
 
 
-class TaskCommentForm(forms.ModelForm):
-    class Meta:
-        model = TaskComment
-        fields = '__all__'
-
+# Future extensibility with task comments
+# class TaskCommentForm(forms.ModelForm):
+#     class Meta:
+#         model = TaskComment
+#         fields = '__all__'
+#
 
 class NewsCreateForm(forms.ModelForm):
     class Meta:

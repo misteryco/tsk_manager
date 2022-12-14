@@ -1,19 +1,39 @@
 {% extends 'base/base.html' %}
-{% load static %}
 {% block content_page %}
 
+
+    <!-- edit car form -->
     <section id="create-page" class="auth">
-        <form id="create" method="post">
+        <form id="create" method="post" enctype="multipart/form-data">
             <div class="container">
 
                 <h1>{{ form_title }}</h1>
-                <form method=post>
-                    {{ form.as_p }}
-                    {% csrf_token %}
-                    <input class="btn submit" type="submit" value="{{ form__button_title }}">
-                </form>
+                {{ form }}
+                {% csrf_token %}
+                <input class="btn submit" type="submit" value="{{ form__button_title }}">
             </div>
         </form>
     </section>
 
 {% endblock %}
+
+
+{#{% extends 'base/base.html' %}#}
+{#{% load static %}#}
+{#{% block content_page %}#}
+{##}
+{#    <section id="create-page" class="auth">#}
+{#        <form id="create" method="post" enctype="multipart/form-data">#}
+{#            <div class="container">#}
+{##}
+{#                <h1>{{ form_title }}</h1>#}
+{#                <form method=post enctype="multipart/form-data">#}
+{#                    {{ form.as_p }}#}
+{#                    {% csrf_token %}#}
+{#                    <input class="btn submit" type="submit" value="{{ form__button_title }}">#}
+{#                </form>#}
+{#            </div>#}
+{#        </form>#}
+{#    </section>#}
+{##}
+{#{% endblock %}#}

@@ -42,32 +42,34 @@ class ShortNewsArticle(models.Model):
         return f'{self.news_Title} by {self.user}'
 
 
-class TaskComment(models.Model):
-    MAX_TEXT_LEN = 255
-
-    task_comment = models.CharField(
-        max_length=MAX_TEXT_LEN,
-        null=False,
-        blank=True,
-    )
-
-    commented_section = models.ForeignKey(
-        Task,
-        on_delete=models.RESTRICT,
-        null=False,
-        blank=True,
-    )
-
-    date_and_time = models.DateTimeField(
-        auto_now_add=True,
-        null=False,
-        blank=False,
-    )
-    comment_user = models.ForeignKey(
-        UserModel,
-        on_delete=models.RESTRICT,
-    )
-
+# Future extensibility with task comments
+#
+# class TaskComment(models.Model):
+#     MAX_TEXT_LEN = 255
+#
+#     task_comment = models.CharField(
+#         max_length=MAX_TEXT_LEN,
+#         null=False,
+#         blank=True,
+#     )
+#
+#     commented_section = models.ForeignKey(
+#         Task,
+#         on_delete=models.RESTRICT,
+#         null=False,
+#         blank=True,
+#     )
+#
+#     date_and_time = models.DateTimeField(
+#         auto_now_add=True,
+#         null=False,
+#         blank=False,
+#     )
+#     comment_user = models.ForeignKey(
+#         UserModel,
+#         on_delete=models.RESTRICT,
+#     )
+#
 
 class NewsComment(models.Model):
     MAX_TEXT_LEN = 255

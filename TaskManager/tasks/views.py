@@ -31,7 +31,7 @@ def task_list_funct_view(request):
             Q(name__icontains=search_pattern) |
             Q(description__icontains=search_pattern))
 
-    tasks = tasks.order_by('due_date', 'priority', 'pk')
+    tasks = tasks.order_by('-pk', 'due_date', 'priority', )
 
     context = {
         "object_list": tasks,
