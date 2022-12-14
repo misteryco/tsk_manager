@@ -83,7 +83,7 @@ class TasksCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
 
 
 class TaskEditView(views.UpdateView):
-    template_name = 'tasks/task-edit.html'
+    template_name = 'base/base-edit-view.html'
     model = Task
     fields = ('name', 'description', 'due_date', 'priority', 'attached_file_by_author', 'attached_file_by_executor',
               'executor')
@@ -92,6 +92,12 @@ class TaskEditView(views.UpdateView):
         return reverse_lazy(
             'task detail',
             kwargs={'pk': self.object.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_title'] = 'Edit Task'
+        context['form__button_title'] = 'EDIT'
+        return context
 
 
 class TaskDetailsView(views.DetailView):

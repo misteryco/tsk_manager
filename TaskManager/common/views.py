@@ -99,14 +99,14 @@ def news_delete(request, pk):
 
 class NewsEditView(auth_mixins.LoginRequiredMixin, views.UpdateView):
     model = ShortNewsArticle
-    template_name = 'common/news-edit.html'
+    template_name = 'base/base-edit-view.html'
     fields = ['news_Title', 'news_article', ]
     success_url = reverse_lazy('home page')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['form_title'] = 'Edit News'
+        context['form__button_title'] = 'EDIT'
         if not self.request.user.is_general_manager:
             raise PermissionDenied()
         return context
-
-
