@@ -42,7 +42,7 @@ def task_list_funct_view(request):
 
 
 class TasksCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
-    template_name = 'tasks/task_create.html'
+    template_name = 'base/base-create-view.html'
     form_class = TasksCreateForm
 
     success_url = reverse_lazy('tasks list')
@@ -54,25 +54,32 @@ class TasksCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
         form.save()
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_title'] = 'Create Task'
+        context['form__button_title'] = 'CREATE'
+        return context
 
-@login_required
-def task_create_view(request):
-    if request.method == 'GET':
-        form = TasksCreateForm()
-    else:
-        form = TasksCreateForm(request.POST, request.FILES)
-        if form.is_valid():
-            photo = form.save(commit=False)  # form.save return object itself
-            photo.user = request.user
-            photo.save()
-            form.save()
-            return redirect(reverse_lazy('tasks list'))
-
-    context = {
-        'form': form,
-    }
-
-    return render(request, 'tasks/task_create.html', context)
+# @login_required
+# def task_create_view(request):
+#     if request.method == 'GET':
+#         form = TasksCreateForm()
+#     else:
+#         form = TasksCreateForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             photo = form.save(commit=False)  # form.save return object itself
+#             photo.user = request.user
+#             photo.save()
+#             form.save()
+#             return redirect(reverse_lazy('tasks list'))
+#
+#     context = {
+#         'form': form,
+#         'form_title': 'Create Vacation',
+#         'form__button_title': 'CREATE',
+#     }
+#
+#     return render(request, 'base/base-create-view.html', context)
 
 
 class TaskEditView(views.UpdateView):
