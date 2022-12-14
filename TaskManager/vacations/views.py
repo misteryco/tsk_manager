@@ -63,11 +63,10 @@ class VacationsListView(LoginRequiredMixin, views.ListView):
     def get_context_data(self, *args, **kwargs):
         total_vacations = self.model.objects.count()
         waiting_approval_vacations = self.model.objects.filter(approved=False)
-        # waiting_approval_vacations_count = waiting_approval_vacations.count()
+
         context = super().get_context_data(*args, **kwargs)
         context['total_vacations'] = total_vacations
         context['waiting_approval_vacations'] = waiting_approval_vacations
-        # context['waiting_approval_vacations_count'] = waiting_approval_vacations_count
 
         return context
 
