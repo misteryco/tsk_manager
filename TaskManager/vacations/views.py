@@ -38,7 +38,7 @@ def next_month(d):
 
 
 class VacationCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
-    template_name = 'vacations/vacation_create_view.html'
+    template_name = 'vacations/../../templates/base/base-create-view.html'
     form_class = VacationCreateForm
 
     success_url = reverse_lazy('vacations list')
@@ -47,6 +47,12 @@ class VacationCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
         vacation = form.save(commit=False)
         vacation.user = self.request.user
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_title'] = 'Create Vacation'
+        context['form__button_title'] = 'CREATE'
+        return context
 
 
 class VacationsListView(LoginRequiredMixin, views.ListView):
