@@ -51,12 +51,14 @@ class UserDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
 
 
 class EditUserView(auth_mixins.LoginRequiredMixin, views.UpdateView):
-    template_name = 'accounts/profile-edit.html'
+    template_name = 'base/base-edit-view.html'
     model = UserModel
     fields = ('first_name', 'last_name', 'email', 'role', 'level', 'is_general_manager',)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['form_title'] = 'Edit Profile'
+        context['form__button_title'] = 'Save Changes'
         if not self.request.user.is_general_manager:
             raise PermissionDenied()
         return context
@@ -68,7 +70,8 @@ class EditUserView(auth_mixins.LoginRequiredMixin, views.UpdateView):
 
 
 class ChangeUserPasswordView(auth_views.PasswordChangeView, auth_mixins.UserPassesTestMixin):
-    template_name = 'accounts/profile-edit.html'
+    # template_name = 'accounts/profile-edit.html'
+    template_name = 'base/base-edit-view.html'
     form_class = ChangeUserPasswordForm
     model = UserModel
 
@@ -77,6 +80,12 @@ class ChangeUserPasswordView(auth_views.PasswordChangeView, auth_mixins.UserPass
             'profile-view user',
             kwargs={'pk': self.request.user.pk})
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_title'] = 'Change Password'
+        context['form__button_title'] = 'Save Changes'
+        return context
+
 
 class DeleteUserView(auth_mixins.LoginRequiredMixin, views.DeleteView):
     template_name = 'accounts/profile-delete.html'
@@ -84,7 +93,7 @@ class DeleteUserView(auth_mixins.LoginRequiredMixin, views.DeleteView):
     success_url = reverse_lazy('home page')
 
     def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
+        context = super().get_context_data(**kwargs)
         if not self.request.user.is_general_manager:
             raise PermissionDenied()
         return context
