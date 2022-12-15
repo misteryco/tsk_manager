@@ -1,5 +1,7 @@
 from django.contrib.auth import mixins as auth_mixins, get_user_model
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic as views
@@ -106,7 +108,13 @@ class TaskDetailsView(views.DetailView):
 
 
 def task_delete(request, pk):
-    # TODO: Exception
-    task = Task.objects.filter(pk=pk).get()
+    # We can use default article get but than we can throw errors handled by django:
+    # article = ShortNewsArticle.objects.filter(pk=pk).get()
+    # or we can use django shortcuts : get_object_or_404,
+    # or we can use custom exception handler
+    try:
+        task = Task.objects.filter(pk=pk).get()
+    except ObjectDoesNotExist as ex:
+        raise Http404
     task.delete()
     return redirect('tasks list')

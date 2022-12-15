@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
-from django.shortcuts import redirect
-from django.contrib.auth import mixins as auth_mixins
-from django.contrib.auth import get_user_model
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
+from django.http import Http404
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib.auth import mixins as auth_mixins, get_user_model
+# from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 from django.views import generic as views
 from TaskManager.common.forms import NewsCommentForm, NewsCreateForm
@@ -51,8 +52,10 @@ class NewsCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
 
 @login_required
 def comment_article(request, pk):
-    # TODO : Exception
-    article = ShortNewsArticle.objects.filter(pk=pk).get()
+    # We can use default article get:
+    # article = ShortNewsArticle.objects.filter(pk=pk).get()
+    # or we can use django shortcuts : get_object_or_404
+    article = get_object_or_404(ShortNewsArticle, pk=pk)
 
     form = NewsCommentForm(request.POST)
 
@@ -92,8 +95,14 @@ class NewsDetailView(auth_mixins.LoginRequiredMixin, views.DetailView):
 
 
 def news_delete(request, pk):
-    # TODO: Exception
-    vacation = ShortNewsArticle.objects.filter(pk=pk).get()
+    # We can use default article get:
+    # article = ShortNewsArticle.objects.filter(pk=pk).get()
+    # or we can use django shortcuts : get_object_or_404,
+    # or we can use custom exception handler
+    try:
+        vacation = ShortNewsArticle.objects.filter(pk=pk).get()
+    except ObjectDoesNotExist as ex:
+        raise Http404
     vacation.delete()
     return redirect('home page')
 

@@ -4,6 +4,7 @@ from django.urls import path, include
 
 from TaskManager import settings
 from TaskManager.common.views import HomePage
+from TaskManager.core.exception_handler import page_not_found
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -16,3 +17,5 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = page_not_found

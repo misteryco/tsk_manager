@@ -3,6 +3,7 @@ from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
 from django.views import generic as views
 from django.shortcuts import redirect, render
+
 from TaskManager.accounts.forms import CreateUserForm, ChangeUserPasswordForm
 from TaskManager.core.services.ses import SESService
 
@@ -29,6 +30,9 @@ class SignInView(auth_views.LoginView):
     template_name = 'accounts/login-page.html'
 
 
+# =============================================================
+# Solution with class view for registration
+
 # class CreateUserView(views.CreateView):
 #     template_name = 'accounts/profile-create.html'
 #     form_class = CreateUserForm
@@ -46,20 +50,20 @@ class SignInView(auth_views.LoginView):
 #             form = CreateUserForm()
 #         return super().post(request, *args, **kwargs)
 
-    # def form_valid(self, form):
-    #     try:
-    #         user = form.save()
-    #     except Exception as ex:
-    #         a = 5
-    #     # Sending informational email for registration through AWS-SES service
-    #     SESService().send_email(user.email)
-    #     # !!! Not used for the moment !!!
-    #     # SQS Services
-    #     # SQSService().send_message(user.email)
-    #     # !!! Not used for the moment !!!
-    #     login(self.request, user)
-    #     return redirect(self.success_url)
-
+# def form_valid(self, form):
+#     try:
+#         user = form.save()
+#     except Exception as ex:
+#         a = 5
+#     # Sending informational email for registration through AWS-SES service
+#     SESService().send_email(user.email)
+#     # !!! Not used for the moment !!!
+#     # SQS Services
+#     # SQSService().send_message(user.email)
+#     # !!! Not used for the moment !!!
+#     login(self.request, user)
+#     return redirect(self.success_url)
+# ==============================================================================
 
 class SignOutView(auth_views.LogoutView):
     next_page = reverse_lazy('home page')

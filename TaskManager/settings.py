@@ -22,7 +22,7 @@ SECRET_KEY = env('SECRET_KEY')
 # python manage.py runserver --insecure
 #
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'localhost',
