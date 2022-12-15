@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinLengthValidator, MaxLengthValidator
 from django.db import models
 
 from TaskManager.tasks.models import Task
@@ -13,6 +13,7 @@ class ShortNewsArticle(models.Model):
     MAX_TEXT_LEN = 300
     NAME_MIN_LEN = 10
     ARTICLE_MIN_LEN = 10
+    ARTICLE_MAX_LEN = 50
 
     news_Title = models.CharField(
         max_length=MAX_TEXT_TITLE_LEN,
@@ -24,7 +25,10 @@ class ShortNewsArticle(models.Model):
         max_length=MAX_TEXT_LEN,
         null=False,
         blank=False,
-        validators=[MinLengthValidator(ARTICLE_MIN_LEN, f'Name should be min {ARTICLE_MIN_LEN} chars'), ]
+        validators=[
+            MinLengthValidator(ARTICLE_MIN_LEN, f'Name should be min {ARTICLE_MIN_LEN} chars'),
+            MaxLengthValidator(ARTICLE_MAX_LEN, f'Article should be maz {ARTICLE_MAX_LEN} chars'),
+        ]
     )
 
     date_and_time = models.DateTimeField(

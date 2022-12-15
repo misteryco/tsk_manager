@@ -1,4 +1,5 @@
 from django.contrib.auth import forms as auth_forms, get_user_model
+from django.core.exceptions import ValidationError
 
 UserModel = get_user_model()
 
@@ -14,6 +15,13 @@ class CreateUserForm(auth_forms.UserCreationForm):
                 field_object.widget.attrs['placeholder'] = 'repeat password'
             else:
                 field_object.widget.attrs['placeholder'] = field_name
+
+    # def clean_email(self):
+    #     data = self.cleaned_data['email']
+    #     exist = UserModel.objects.filter(email=data).count()
+    #     if exist > 0:
+    #         raise ValidationError("We have a user with this user email-id")
+    #     return data
 
     class Meta:
         model = UserModel

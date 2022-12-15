@@ -121,6 +121,7 @@ def vacation_edit_view(request, pk):
 
 @login_required
 def vacation_approve_disapprove(request, pk):
+    # TODO: Exception
     vacation = Vacation.objects.filter(pk=pk).get()
 
     if request.user.level != 'team_lead':
@@ -136,6 +137,7 @@ def vacation_approve_disapprove(request, pk):
 
 @login_required
 def vacation_delete(request, pk):
+    # TODO: Exception
     vacation = Vacation.objects.filter(pk=pk).get()
     if request.user != vacation.user:
         raise PermissionDenied()

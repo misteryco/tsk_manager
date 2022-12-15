@@ -106,6 +106,7 @@ class TaskDetailsView(views.DetailView):
 
 
 def task_delete(request, pk):
+    # TODO: Exception
     task = Task.objects.filter(pk=pk).get()
     task.delete()
     return redirect('tasks list')

@@ -17,6 +17,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# For custom 404 debug should be disabled
+# to start project locally with working static files use:
+# python manage.py runserver --insecure
+#
+
 DEBUG = True
 
 ALLOWED_HOSTS = [

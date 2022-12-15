@@ -1,11 +1,11 @@
 from django.urls import path, include
 
-from TaskManager.accounts.views import SignInView, CreateUserView, SignOutView, UserDetailsView, EditUserView, \
-    DeleteUserView, ChangeUserPasswordView, ManageSubordinatesView
+from TaskManager.accounts.views import SignInView, SignOutView, UserDetailsView, EditUserView, \
+    DeleteUserView, ChangeUserPasswordView, ManageSubordinatesView, sign_up_view
 
 urlpatterns = [
     path('login/', SignInView.as_view(), name='login user'),
-    path('register/', CreateUserView.as_view(), name='register user'),
+    path('register/', sign_up_view, name='register user'),
     path('logout/', SignOutView.as_view(), name='logout user'),
     path('manage/', ManageSubordinatesView.as_view(), name='manage subordinates'),
     path('profile/<int:pk>/', include([

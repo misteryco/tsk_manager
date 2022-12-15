@@ -1,12 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.contrib.auth import mixins as auth_mixins
-from django.contrib.auth import views as auth_views, get_user_model
+from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
-from django.views import generic as views, View
-
-from TaskManager.common.forms import NewsCommentForm, NewsCreateForm, EditNewsForm
+from django.views import generic as views
+from TaskManager.common.forms import NewsCommentForm, NewsCreateForm
 from TaskManager.common.models import ShortNewsArticle
 
 UserModel = get_user_model()
@@ -52,6 +51,7 @@ class NewsCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
 
 @login_required
 def comment_article(request, pk):
+    # TODO : Exception
     article = ShortNewsArticle.objects.filter(pk=pk).get()
 
     form = NewsCommentForm(request.POST)
@@ -92,6 +92,7 @@ class NewsDetailView(auth_mixins.LoginRequiredMixin, views.DetailView):
 
 
 def news_delete(request, pk):
+    # TODO: Exception
     vacation = ShortNewsArticle.objects.filter(pk=pk).get()
     vacation.delete()
     return redirect('home page')

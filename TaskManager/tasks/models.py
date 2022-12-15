@@ -3,7 +3,6 @@ from enum import Enum
 
 from django.contrib.auth import get_user_model
 from django.core import validators
-from django.core.validators import MinValueValidator
 from django.db import models
 
 from TaskManager.core.model_mixins import ChoicesEnumMixin
@@ -19,24 +18,27 @@ class Priority(ChoicesEnumMixin, Enum):
 
 
 class Task(models.Model):
-    NAME_MAX_LEN = 150
+    NAME_MAX_LEN = 50
     NAME_MIN_LEN = 10
+    DESCR_MAX_LEN = 50
+
     name = models.CharField(
         null=False,
         blank=False,
         max_length=NAME_MAX_LEN,
-        validators=[validators.MinLengthValidator(NAME_MIN_LEN, f'Name should be min {NAME_MIN_LEN} chars'), ]
+        validators=[validators.MinLengthValidator(NAME_MIN_LEN, f'Name should be min {NAME_MIN_LEN} chars'), ],
     )
 
     description = models.TextField(
         null=False,
         blank=False,
+        validators=[validators.MaxLengthValidator(DESCR_MAX_LEN, f'Description should be max {DESCR_MAX_LEN} chars'), ],
     )
 
     due_date = models.DateField(
         null=False,
         blank=False,
-        validators=[MinValueValidator(date.today(), f'Task due date cannot be in the past !')]
+        validators=[validators.MinValueValidator(date.today(), f'Task due date cannot be in the past !')]
     )
 
     priority = models.CharField(

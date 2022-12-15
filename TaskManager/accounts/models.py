@@ -25,6 +25,8 @@ class AppUser(auth_models.AbstractUser):
     LAST_NAME_MAX_LEN = 30
     LAST_NAME_MIN_LEN = 2
 
+    email = models.EmailField(unique=True,  blank=False)
+
     first_name = models.CharField(
         max_length=FIRST_NAME_MAX_LEN,
         validators=[

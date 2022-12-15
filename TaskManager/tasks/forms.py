@@ -1,7 +1,7 @@
 from django.forms import ModelForm, Form, DateInput, SelectMultiple
 from django import forms
 
-from TaskManager.accounts.templatetags.placeholders import placeholder
+# from TaskManager.accounts.templatetags.placeholders import placeholder
 from TaskManager.tasks.models import Task
 
 

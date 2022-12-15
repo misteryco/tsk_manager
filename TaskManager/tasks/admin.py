@@ -18,3 +18,4 @@ class Task(admin.ModelAdmin):
     def get_ordering(self, request):
         # sort case-insensitive
         return [Lower('name')]
+    # TODO : Custom Filter
