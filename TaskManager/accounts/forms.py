@@ -16,6 +16,7 @@ class CreateUserForm(auth_forms.UserCreationForm):
             else:
                 field_object.widget.attrs['placeholder'] = field_name
 
+    # To be used when form class is not from UserCreationForm
     # def clean_email(self):
     #     data = self.cleaned_data['email']
     #     exist = UserModel.objects.filter(email=data).count()

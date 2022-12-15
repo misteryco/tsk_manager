@@ -22,7 +22,7 @@
                 {% endfor %}
 
                 {% if request.user.is_general_manager %}
-                    <div class="buttons">
+                    <div class="buttons" style="text-align: center; padding-top:20px">
                         <a href="{% url 'edit article' pk=object.pk %}" class="edit-button">Edit</a>
                         <a href="{% url 'delete article' pk=object.pk %}" class="delete-button">Delete</a>
                     </div>

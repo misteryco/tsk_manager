@@ -11,6 +11,12 @@
                 {{ form }}
                 {% csrf_token %}
                 <input class="btn submit" type="submit" value="{{ form__button_title }}">
+                {% if form_title == 'Edit News' %}
+                    <p></p>
+                    <div class="buttons" style="text-align: center; padding-top:20px">
+                        <a href="{% url 'delete article' pk=object.pk %}" class="delete-button">Delete</a>
+                    </div>
+                {% endif %}
             </div>
         </form>
     </section>
