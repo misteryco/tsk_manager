@@ -13,7 +13,9 @@ UserModel = get_user_model()
 
 
 class HomePage(views.ListView):
-    model = UserModel
+
+    # model = UserModel
+    model = ShortNewsArticle
     template_name = 'index.html'
 
     def get_context_data(self, *args, **kwargs):
