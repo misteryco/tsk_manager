@@ -9,5 +9,4 @@ class Vacation(admin.ModelAdmin):
     list_filter = ('approved',)
 
     def get_ordering(self, request):
-        # sort case-insensitive
         return ['start_date', ]

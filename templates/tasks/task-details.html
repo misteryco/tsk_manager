@@ -32,7 +32,9 @@
                 <!-- Edit/Delete buttons -->
                 <div class="buttons">
                     <a href="{% url 'task edit' pk=object.pk %}" class="edit-button">Edit</a>
-                    <a href="{% url 'task delete' pk=object.pk %}" class="delete-button">Delete</a>
+                    {% if object.user == request.user %}
+                        <a href="{% url 'task delete' pk=object.pk %}" class="delete-button">Delete</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

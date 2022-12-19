@@ -2,10 +2,13 @@ from django.contrib.auth import views as auth_views, mixins as auth_mixins, get_
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
 from django.views import generic as views
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 
 from TaskManager.accounts.forms import CreateUserForm, ChangeUserPasswordForm
+from TaskManager.common.models import ShortNewsArticle, NewsComment
 from TaskManager.core.services.ses import SESService
+from TaskManager.tasks.models import Task
+from TaskManager.vacations.models import Vacation
 
 UserModel = get_user_model()
 
@@ -128,9 +131,23 @@ class DeleteUserView(auth_mixins.LoginRequiredMixin, views.DeleteView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
+        comments_by_user = self.object.task_set.all
         if not self.request.user.is_general_manager:
             raise PermissionDenied()
         return context
+
+    # TODO: To delete vacations per user, to delete task per user, to delete comment per user
+    #  at the end ot 2022-12-17 this part of the code was not implemented !!!
+    def form_valid(self, form, *args, **kwargs):
+        current_user = get_object_or_404(UserModel, pk=self.object.pk)
+        current_user_comments = NewsComment.objects.filter(comment_user=current_user)
+        current_user_tasks = Task.objects.filter(user=current_user)
+        current_user_vacations = Vacation.objects.filter(user=current_user)
+        current_user_tasks.delete()
+        current_user_comments.delete()
+        current_user_vacations.delete()
+        self.object.delete()
+        return redirect(self.success_url)
 
 
 class ManageSubordinatesView(views.ListView):

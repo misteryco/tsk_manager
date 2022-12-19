@@ -29,7 +29,6 @@ class VacationCreateForm(VacationBaseForm):
 class VacationEditForm(VacationBaseForm):
     def __int__(self, *args, **kwargs):
         for field_name, field_object in self.fields.items():
-            # if field_name in ('approved',):
             field_object.widget.attrs['disabled'] = 'disabled'
 
     class Meta:

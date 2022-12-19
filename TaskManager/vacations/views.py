@@ -94,6 +94,13 @@ class VacationDetailsView(LoginRequiredMixin, views.DetailView):
     template_name = 'vacations/vacation-details.html'
     model = Vacation
 
+    # url tampering protection
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     if self.request.user != self.object.user:
+    #         raise PermissionDenied()
+    #     return context
+
 
 @login_required
 def vacation_edit_view(request, pk):
